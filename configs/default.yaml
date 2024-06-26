@@ -1,0 +1,17 @@
+# mln
+mln_threshold_of_rule: 0.1
+mln_threshold_of_triplet: 0.7
+weight: 0.5
+
+# kge
+kge_model: 'TransE'
+kge_batch: 1024
+kge_neg: 256
+kge_dim: 100
+kge_gamma: 24
+kge_alpha: 1
+kge_lr: 0.001
+kge_iters: 10000
+kge_tbatch: 16
+kge_reg: 0.0
+kge_topk: 100
