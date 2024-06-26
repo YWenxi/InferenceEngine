@@ -1,0 +1,3 @@
+[submodule "pLogicNet"]
+	path = pLogicNet
+	url = https://github.com/DeepGraphLearning/pLogicNet.git
