@@ -16,6 +16,15 @@ def ensure_dir(path):
     return path
 
 
+def shell(cmd):
+    print(cmd)
+    code = os.system(cmd)
+    if code == 0:
+        print("Succeed!")
+    else: 
+        raise RuntimeError(f"Failed. Exit Code: {code}")
+
+
 if __name__ == "__main__":
     cfg = load_yaml("./configs/default.yaml")
     print(cfg.mln_threshold_of_triplet)
