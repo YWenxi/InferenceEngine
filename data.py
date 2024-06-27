@@ -90,7 +90,7 @@ def build_dataset(workspace, negative_sample_size=4):
         _build_dataset(train_triples_dict, "tail-batch")
 
     
-def build_dataloader(dataset_tuple, batch_size=8, shuffle=True, num_workers=4):
+def build_dataloader(dataset_tuple, batch_size=8, shuffle=True, num_workers=2):
     _build_dataloader = lambda dataset: DataLoader(
         dataset,
         batch_size,
