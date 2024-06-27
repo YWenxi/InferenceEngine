@@ -10,6 +10,7 @@ def load_yaml(path):
         yaml_data = yaml.safe_load(file)
     return Box(yaml_data)
 
+
 def save_yaml(path, configs: Box):
     with open(path, "w") as f:
         yaml.dump(configs.to_dict(), f)

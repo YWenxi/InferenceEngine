@@ -6,10 +6,38 @@ from utils import log_metrics
 
 import torch.nn as nn
 import torch
+import numpy as np
 
 from math import log10
 
 import logging
+import os
+
+
+def save_model(model: nn.Module, optimizer, save_variable_list, args):
+    '''
+    Save the parameters of the model and the optimizer,
+    as well as some other variables such as step and learning_rate
+    '''
+
+    torch.save({
+        **save_variable_list,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict()},
+        os.path.join(args.save_path, 'checkpoint')
+    )
+    
+    entity_embedding = model.entity_embedding.detach().cpu().numpy()
+    np.save(
+        os.path.join(args.save_path, 'entity_embedding'), 
+        entity_embedding
+    )
+    
+    relation_embedding = model.relation_embedding.detach().cpu().numpy()
+    np.save(
+        os.path.join(args.save_path, 'relation_embedding'), 
+        relation_embedding
+    )
 
 
 class BaseModel:
@@ -52,11 +80,12 @@ class pLogicNet(BaseModel):
         
         
     def train(self, dataloader, workspace, args,
-              warmup_steps=None, optimizer="adam", lr=0.001,
+              warm_up_steps=None, optimizer="adam", lr=0.001,
               max_steps=int(1E4), device='cuda',
               log_step=5):
         
         set_logger(ensure_dir(workspace) / "train.log")
+        args.save_path = ensure_dir(workspace / "save")
         
         if not isinstance(self.model, KGEModel):
             raise ValueError(f"self.model is not a Valid KGE Model: {self.model}")
@@ -97,7 +126,7 @@ class pLogicNet(BaseModel):
             lr
         )
         
-        # start training
+        # training config
         logging.info("-"*10 + 'Training Configuration:')
         logging.info('init_step = %d' % init_step)
         logging.info('learning_rate = %d' % lr)
@@ -110,6 +139,7 @@ class pLogicNet(BaseModel):
         if args.negative_adversarial_sampling:
             logging.info('adversarial_temperature = %f' % args.adversarial_temperature)
         
+        # start training
         logging.info("-"*20 + "TRAINING STARTS" + "-"*20)
         for step in range(init_step, max_steps):
             logs = self.model.train_step(self.model, optimizer, dataloader, args)
@@ -124,6 +154,15 @@ class pLogicNet(BaseModel):
                 training_logs = []
                 
         logging.info("-"*20 + "TRAINING ENDS" + "-"*20)
+        
+        # save
+        save_variable_list = {
+            'step': step, 
+            'current_learning_rate': lr,
+            'warm_up_steps': warm_up_steps
+        }
+        save_model(self.model, optimizer, save_variable_list, args)
+        logging.info(f"training output saved at {args.save_path}")
             
         return training_logs
     
