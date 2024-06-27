@@ -12,7 +12,7 @@ def load_yaml(path):
 
 def ensure_dir(path):
     path = Path(path)
-    path.mkdir(exist_ok=True)
+    path.mkdir(exist_ok=True, parents=True)
     return path
 
 
