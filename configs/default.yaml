@@ -11,32 +11,31 @@ weight: 0.5
 iterations: 2
 
 # cuda
-cuda: False
+cuda: true
 
 # kge
-kge_model: TransE
-kge_batch: 1024
-kge_neg: 256
-kge_dim: 100
-kge_gamma: 24
-kge_alpha: 1
-kge_lr: 0.001
-kge_iters: 10000
-kge_tbatch: 16
-kge_reg: 0.0
-kge_topk: 100
+# kge_model: TransE
+# kge_neg: 256
+# kge_dim: 100
+# kge_gamma: 24
+# kge_alpha: 1
+# kge_lr: 0.001
+# kge_iters: 10000
+# kge_tbatch: 16
+# kge_reg: 0.0
+# kge_topk: 100
 
-kge_batch: 256
-keg_neg: 256
-kge_dim: 1000
-kge_gamma: 24.0
-kge_alpha: 1.0
-kge_lr: 0.0001
-kge_iters: 50000
-kge_tbatch: 16
+# kge_batch: 256
+# keg_neg: 256
+# kge_dim: 1000
+# kge_gamma: 24.0
+# kge_alpha: 1.0
+# kge_lr: 0.0001
+# kge_iters: 50000
+# kge_tbatch: 16
 
 negative_adversarial_sampling: true
 adversarial_temperature: 1.0
-batch_size: 32
+batch_size: 8
 regularization: 0.0
 uni_weight: true
