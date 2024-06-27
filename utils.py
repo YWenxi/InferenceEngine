@@ -1,6 +1,7 @@
 import os
 import yaml
 import logging
+import datetime
 from box import Box
 from pathlib import Path
 
@@ -9,6 +10,10 @@ def load_yaml(path):
     with open(path, 'r') as file:
         yaml_data = yaml.safe_load(file)
     return Box(yaml_data)
+
+        
+def get_timestamp():
+    return str(datetime.datetime.now()).replace(' ', '_')
 
 
 def save_yaml(path, configs: Box):

@@ -7,7 +7,6 @@ from pLogicNet.utils import cmd_mln
 from pLogicNet.kge.dataloader import TrainDataset, BidirectionalOneShotIterator
 
 import shutil
-import datetime
 from utils import ensure_dir, shell
 
 
@@ -18,10 +17,6 @@ def data_preprocessing(mln_path, data, dataspace="./record"):
     shutil.copy(data, dataspace / "train_augmented.txt")
     
     shell(cmd_mln(mln_path, dataspace, dataspace, True))
-    
-    
-def get_timestamp():
-    return str(datetime.datetime.now()).replace(' ', '_')
     
     
 def setup_mln_iteration(dataspace, iter_id=0, workspace=None):
