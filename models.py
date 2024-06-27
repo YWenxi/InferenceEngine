@@ -164,7 +164,7 @@ class pLogicNet(BaseModel):
         save_model(self.model, optimizer, save_variable_list, args)
         logging.info(f"training output saved at {args.save_path}")
             
-        return training_logs
+        return 0
     
     
 if __name__ == "__main__":
