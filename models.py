@@ -3,6 +3,7 @@ from utils import ensure_dir
 from utils import set_logger
 from utils import save_yaml
 from utils import log_metrics
+from data import read_triple
 
 import torch.nn as nn
 import torch
@@ -79,10 +80,12 @@ class pLogicNet(BaseModel):
                                 double_relation_embedding)
         
         
-    def train(self, dataloader, workspace, args,
+    def train(self, dataloader, hidden_triples, workspace, args,
               warm_up_steps=None, optimizer="adam", lr=0.001,
               max_steps=int(1E4), device='cuda',
-              log_step=5):
+              log_step=5, record=True):
+        
+        
         
         set_logger(ensure_dir(workspace) / "train.log")
         args.save_path = ensure_dir(workspace / "save")
@@ -93,6 +96,8 @@ class pLogicNet(BaseModel):
         logging.info(f"Model: {self.model.model_name}")
         logging.info(f"#entity: {self.model.nentity}")
         logging.info(f"#relation: {self.model.nrelation}")
+        logging.info('#hidden: %d' % len(hidden_triples))
+        
         logging.info(f"Workspace: {workspace}")
         
         # cuda
@@ -163,6 +168,13 @@ class pLogicNet(BaseModel):
         }
         save_model(self.model, optimizer, save_variable_list, args)
         logging.info(f"training output saved at {args.save_path}")
+        
+        # Annotate hidden triplets
+        if record:
+            scores = self.model.infer_step(self.model, hidden_triples, args)
+            with open(workspace / 'annotation.txt', 'w') as fo:
+                for (h, r, t), s in zip(hidden_triples, scores):
+                    fo.write('{}\t{}\t{}\t{}\n'.format(h, r, t, s))
             
         return 0
     
