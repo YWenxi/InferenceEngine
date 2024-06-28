@@ -1,14 +1,24 @@
 from utils import ensure_dir
+from utils import load_yaml
 
 from models import pLogicNet
 
 from data import build_dataloader
 from data import build_dataset
-from data import read_txt_triples
+from data import read_txt_triples, read_triple
 from data import data_preprocessing
 from data import setup_mln_iteration
 
-from utils import load_yaml
+from pathlib import Path
+
+
+def test_read_tuples():
+    train_kge = Path("./record/test_timestamp/0/train_kge.txt")
+    if not train_kge.exists():
+        return 0
+    triples = read_txt_triples(train_kge)
+    read_triple(train_kge.parent / "hidden.txt", triples["entity2id"], triples["relation2id"])
+
 
 def test_dataset():
     data = "./data/neo4j/neo4j.txt"
@@ -37,4 +47,4 @@ def test_model():
     model = pLogicNet(triples["nentities"], triples["nrelations"])
     datasets = build_dataset(workspace)
     dataloader = build_dataloader(datasets)
-    model.train(dataloader, args=args, max_steps=10)
+    model.train(dataloader, workspace, args=args, max_steps=100)
