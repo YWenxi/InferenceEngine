@@ -68,9 +68,9 @@ if __name__ == "__main__":
     record = "./record"
     import shutil
     
-    try:
-        shutil.rmtree(record)
-    except FileNotFoundError:
-        ensure_dir(record)
+    # try:
+    #     shutil.rmtree(record)
+    # except FileNotFoundError:
+    #     ensure_dir(record)
         
     train(data)

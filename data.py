@@ -137,7 +137,6 @@ if __name__ == "__main__":
     triples = read_txt_triples(workspace_1 / "train_kge.txt")
     print(triples["data"])
     print(triples["nentities"])
-    print(triples["converted_cols"])
     
     datasets = build_dataset(workspace_1)
     print(datasets[0][0], data[1][0], sep='\n')

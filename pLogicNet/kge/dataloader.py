@@ -13,7 +13,7 @@ class TrainDataset(Dataset):
     def __init__(self, triples, nentity, nrelation, negative_sample_size, mode):
         self.len = len(triples)
         self.triples = triples
-        self.triple_set = set(triples)
+        # self.triple_set = set(triples)
         self.nentity = nentity
         self.nrelation = nrelation
         self.negative_sample_size = negative_sample_size

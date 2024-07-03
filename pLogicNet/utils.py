@@ -1,5 +1,29 @@
 import sys
 import os
+from pathlib import Path
+
+
+def cmd_mln(mln, main_path, workspace_path, preprocessing=True, mln_threads=8,
+            mln_iters=100, mln_lr=0.001, mln_threshold_of_rule=0.8):
+    # shell(cmd_mln(
+    #             mln = Path(__file__).absolute().parent / "pLogicNet" / "mln" / "mln",
+    #             main_path = dataspace.absolute(),
+    #             workspace_path = workspace_iter.absolute(),
+    #             preprocessing = False,
+    #             mln_threads = args.mln_threads,
+    #             mln_iters = args.mln_iters,
+    #             mln_lr = args.mln_lr,
+    #             mln_threshold_of_rule = args.mln_threshold_of_rule
+    #         ))
+    if preprocessing == True:
+        return '{} -observed {}/train.txt -out-hidden {}/hidden.txt -save {}/mln_saved.txt -thresh-rule {} -iterations 0 -threads {}'.format(
+            mln, main_path, main_path, main_path, mln_threshold_of_rule, mln_threads
+        )
+    else:
+        return '{} -load {}/mln_saved.txt -probability {}/annotation.txt -out-prediction {}/pred_mln.txt -out-rule {}/rule.txt -thresh-triplet 1 -iterations {} -lr {} -threads {}'.format(
+            mln, main_path, workspace_path, workspace_path, workspace_path, mln_iters, mln_lr, mln_threads
+        )
+
 
 # This function computes the probability of a triplet being true based on the MLN outputs.
 def mln_triplet_prob(h, r, t, hrt2p):
